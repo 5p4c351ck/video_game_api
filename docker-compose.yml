@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: laravel-app
+    volumes:
+      - .:/var/www
+      - ./database:/var/www/database  # Mount the database directory to persist data
+    ports:
+      - "8000:8000"  # Expose the app to port 8000 on your host machine
+    networks:
+      - laravel-net
+
+networks:
+  laravel-net:
+    driver: bridge
