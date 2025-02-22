@@ -10,7 +10,8 @@ class GameController extends Controller
     // Display a listing of the games
     public function index()
     {
-        return Game::all();
+        #return Game::all();
+        return Game::where('user_id', auth()->id())->get();
     }
 
     // Display a specific game
