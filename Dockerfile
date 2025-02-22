@@ -12,7 +12,8 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-install pdo pdo_sqlite
 
 # Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN curl -sS https://getcomposer.org/download/2.6.0/composer.phar -o /usr/local/bin/composer \
+    && chmod +x /usr/local/bin/composer
 
 # Set the working directory inside the container
 WORKDIR /var/www
@@ -26,8 +27,14 @@ RUN test -f .env || cp .env.example .env
 # Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
+#Create the sqlite database file
+RUN touch ./database/database.sqlite
+
 # Generate the application key automatically    MINE
 RUN php artisan key:generate
+
+#Generate the database tables
+RUN php artisan migrate
 
 # Set appropriate file permissions for Laravel's storage and cache directories MINE
 RUN chown -R www-data:www-data storage bootstrap/cache
