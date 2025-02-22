@@ -8,10 +8,23 @@ use Illuminate\Http\Request;
 class GameController extends Controller
 {
     // Display a listing of the games
-    public function index()
-    {
-        #return Game::all();
-        return Game::where('user_id', auth()->id())->get();
+    public function index(Request $request)
+	    {
+    		// Get the currently authenticated user's games
+    		$query = Game::where('user_id', auth()->id());
+
+    		// Filter by genre if provided
+    		if ($request->has('genre')) {
+        		$query->where('genre', $request->genre);
+    		}
+
+    		// Sort by release date if requested
+    		if ($request->has('sort_by') && $request->sort_by === 'release_date') {
+        		$query->orderBy('release_date');
+    		}
+
+    		// Return the filtered and/or sorted games
+    		return $query->get();
     }
 
     // Display a specific game
