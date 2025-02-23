@@ -21,27 +21,62 @@ I assume Windows will be used, but the commands should work on Linux and macOS a
 - [API Testing](#postman-collection)
 
 ## Installation
-
+Since the deliverable was asked as a git repository I assume git is installed
+otherwise git can be downloaded from this link [Download Git](https://git-scm.com/downloads/win)
 1. Clone the repository to your local machine:
    ```bash
    git clone https://github.com/5p4c351ck/video_game_api
+   ```
+   Navigate into the directory
+   ```bash
    cd video_game_api
    ```
 
 ## Running with Docker
 
 If Windows are used then Docker desktop needs to be installed.
-follow the link bellow
-[Install Docker Deskop](https://docs.docker.com/desktop/setup/install/windows-install/)
+follow the link [Install Docker Deskop](https://docs.docker.com/desktop/setup/install/windows-install/)
 
-2. Build the Docker image and start a Docker container:
+If Linux(Debian based) are used you can follow this link [Install Docker on debian](https://docs.docker.com/engine/install/debian/)
+
+2. Build the Docker image:
    ```bash
    docker build -t video_games_api .
+   ```
+   Start a Docker container:
+   You can either run this commands in the shell in Linux or Powershell on Windows or open Docker Desktop and run the container manually.
+   
+   ```bash
    docker run --name video_games_api_container -d -p 8000:8000 video_games_api
    ```
+   You can start it from Docker desktop from the images tab, screenshot bellow.
+   
+   If you want to run it manually you need to set the port to 8000 like in the screenshot bellow.
+
 
 ## API Testing
 
 3. The API will be tested using Postman, so it needs to be installed as well if it's not installed already.
 follow the link [Postman Installation](https://www.postman.com/downloads/)
+
+The collection and environment files inside the Postman folder
+need to be imported in Postman, click import on top left and import both.
+
+Finally you need to choose the Environment from the top right corner and also
+add the following script in the Post-respose Scripts of the login requests highlighted in the image bellow.
+
+```javascript
+if (pm.response.code === 200) {
+    var jsonResponse = pm.response.json();
+    pm.environment.set("authToken", jsonResponse.token);
+}
+```
+
+You are now ready to test the API endpoints.
+
+
+
+
+
+
 
