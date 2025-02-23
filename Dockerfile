@@ -35,7 +35,7 @@ RUN php artisan key:generate
 
 #Generate the database tables
 RUN php artisan migrate
-
+RUN php artisan db:seed 
 # Set appropriate file permissions for Laravel's storage and cache directories MINE
 RUN chown -R www-data:www-data storage bootstrap/cache
 
