@@ -10,8 +10,12 @@ class GameController extends Controller
     // Display a listing of the games
     public function index(Request $request)
 	    {
-    		// Get the currently authenticated user's games
-    		$query = Game::where('user_id', auth()->id());
+
+		$query = Game::query();
+    		// If the use is not the Admin then show him only his games for the Dashboard functionality requested in the specs
+ 		if (auth()->user()->role !== 'admin') {
+       		    $query->where('user_id', auth()->id());  
+    		}
 
     		// Filter by genre if provided
     		if ($request->has('genre')) {
@@ -30,7 +34,11 @@ class GameController extends Controller
     // Display a specific game
     public function show(Game $game)
     {
-        return $game;
+    	if ($game->user_id === auth()->id() || auth()->user()->role === 'admin') {
+            return $game;
+    	}
+    
+    	return response()->json(['error' => 'Unauthorized, if the game exists, only the owner and/or Admin can view it'], 403);
     }
 
     // Store a newly created game
@@ -42,6 +50,16 @@ class GameController extends Controller
             'release_date' => 'required|date',
             'genre' => 'required|string|max:255',
         ]);
+
+	//Check if the game already exists
+	$duplicateGame = Game::where('title', $request->title)
+                       ->where('release_date', $request->release_date)
+                       ->where('user_id', auth()->id()) // check for the logged-in user's games
+                       ->first();
+
+    	if ($duplicateGame) {
+            return response()->json(['error' => 'This game already exists.'], 400);
+   	}
 
         $game = Game::create([
             'title' => $request->title,
@@ -57,6 +75,11 @@ class GameController extends Controller
     // Update an existing game
     public function update(Request $request, Game $game)
     {
+
+	if ($game->user_id !== auth()->id() && auth()->user()->role !== 'admin') {
+            return response()->json(['error' => 'Unauthorized, if the game exists, only the owner and/or Admin can update it'], 403);
+    	}
+
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -72,8 +95,13 @@ class GameController extends Controller
     // Delete a game
     public function destroy(Game $game)
     {
-        $game->delete();
 
-        return response()->json(null, 204);
-    }
+	if (auth()->user()->role === 'admin' || $game->user_id === auth()->id()) {
+        	$game->delete();
+        	return response()->json(null, 204);  
+    	}
+
+    	return response()->json(['error' => 'Unauthorized, if the game exists, only the owner and/or Admin can delete it'], 403);
+
+    	}
 }
