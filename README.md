@@ -32,6 +32,8 @@ otherwise git can be downloaded from this link [Download Git](https://git-scm.co
    cd video_game_api
    ```
 
+
+
 ## Running with Docker
 
 If Windows are used then Docker desktop needs to be installed.
@@ -40,18 +42,25 @@ follow the link [Install Docker Deskop](https://docs.docker.com/desktop/setup/in
 If Linux(Debian based) are used you can follow this link [Install Docker on debian](https://docs.docker.com/engine/install/debian/)
 
 2. Build the Docker image:
+
    ```bash
    docker build -t video_games_api .
    ```
    Start a Docker container:
-   You can either run this commands in the shell in Linux or Powershell on Windows or open Docker Desktop and run the container manually.
-   
+   You can run this commands in the shell in Linux or Powershell on Windows to run the container.
+
    ```bash
    docker run --name video_games_api_container -d -p 8000:8000 video_games_api
    ```
-   You can start it from Docker desktop from the images tab, screenshot bellow.
+
    
-   If you want to run it manually you need to set the port to 8000 like in the screenshot bellow.
+Otherwise, you can start it from Docker desktop from the images tab, screenshot bellow.
+![Docker images](https://github.com/5p4c351ck/video_game_api/blob/main/screenshots/docker_desktop.png)
+   
+If you want to run it manually you need to set the port to 8000 like in the screenshot bellow.
+![Docker container port](https://github.com/5p4c351ck/video_game_api/blob/main/screenshots/docker_desktop_port.png)
+
+
 
 
 ## API Testing
@@ -61,6 +70,7 @@ follow the link [Postman Installation](https://www.postman.com/downloads/)
 
 The collection and environment files inside the Postman folder
 need to be imported in Postman, click import on top left and import both.
+![Import in Postman](https://github.com/5p4c351ck/video_game_api/blob/main/screenshots/Postman_import.png)
 
 Finally you need to choose the Environment from the top right corner and also
 add the following script in the Post-respose Scripts of the login requests highlighted in the image bellow.
@@ -71,6 +81,9 @@ if (pm.response.code === 200) {
     pm.environment.set("authToken", jsonResponse.token);
 }
 ```
+![Postman setup](https://github.com/5p4c351ck/video_game_api/blob/main/screenshots/Postman_setup.png)
+
+
 
 You are now ready to test the API endpoints.
 
