@@ -23,6 +23,9 @@ I assume Windows will be used, but the commands should work on Linux and macOS a
 ## Installation
 Since the deliverable was asked as a git repository I assume git is installed
 otherwise git can be downloaded from this link [Download Git](https://git-scm.com/downloads/win)
+
+The follwing commands will work on both, Linux shells as well as Windows Powershell
+
 1. Clone the repository to your local machine:
    ```bash
    git clone https://github.com/5p4c351ck/video_game_api
@@ -47,7 +50,7 @@ If Linux(Debian based) are used you can follow this link [Install Docker on debi
    docker build -t video_games_api .
    ```
    Start a Docker container:
-   You can run this commands in the shell in Linux or Powershell on Windows to run the container.
+   You can run this commands to run the container.
 
    ```bash
    docker run --name video_games_api_container -d -p 8000:8000 video_games_api
