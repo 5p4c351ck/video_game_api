@@ -73,7 +73,7 @@ need to be imported in Postman, click import on top left and import both.
 ![Import in Postman](https://github.com/5p4c351ck/video_game_api/blob/main/screenshots/Postman_import.png)
 
 Finally you need to choose the Environment from the top right corner and also
-add the following script in the Post-respose Scripts of the login requests for both use and Admin, highlighted in the image bellow.
+add the following script in the Post-respose Scripts of the login requests for both user and Admin, highlighted in the image bellow.
 
 ```javascript
 if (pm.response.code === 200) {
